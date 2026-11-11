@@ -1,0 +1,53 @@
+name: OpenSpec 变更
+description: 提议或跟踪一项通过 OpenSpec 治理的项目变更
+title: "[Change] "
+labels:
+  - openspec
+body:
+  - type: markdown
+    attributes:
+      value: 请先确认该事项是否需要独立 OpenSpec change，再填写以下范围和验收信息。
+  - type: input
+    id: change
+    attributes:
+      label: OpenSpec change
+      description: 填写 kebab-case change 名称；尚未创建时填写“待创建”。
+      placeholder: add-market-briefing
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 变更范围
+      description: 说明要解决的问题、用户价值和计划改动范围。
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: 验证命令与验收结果
+      description: 列出计划执行或已经执行的测试、检查和 Verify 命令。
+      placeholder: python3 scripts/project.py verify
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: 明确不改动范围
+      description: 列出本次不会实现或不会触碰的能力。
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: 风险与安全边界
+      description: 包括数据、凭据、模型调用、QMT、交易和回滚风险。
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全确认
+      options:
+        - label: 本变更不会在未经明确审批时连接实盘或发送真实订单。
+          required: true
