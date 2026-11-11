@@ -4,25 +4,32 @@ context: |
   Language: zh-CN
   All artifacts must be written in zh-CN.
   Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  项目沟通、需求说明、设计解释、任务描述和验收场景默认使用简体中文。
+  代码标识符、API 字段、库名、命令和日志原文保持其原始英文形式。
+  本项目是包含界面、Python 后端、量化策略与回测、QMT 自动交易接入的 AI 量化系统。
+  默认使用模拟、回放或仿真环境；实盘交易能力必须作为独立变更设计并经过明确审批。
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - 使用简体中文说明背景、目标、范围、明确不在范围内的内容以及主要风险。
+    - 涉及交易行为、资金、账户或 QMT 的变更，必须说明模拟、仿真和实盘环境的影响。
+  specs:
+    - 使用简体中文描述需求和场景，但保留 Requirement、Scenario、SHALL、MUST 等结构关键词。
+    - 每项需求必须具有可验证的验收场景，并覆盖关键失败路径和边界条件。
+  design:
+    - 使用简体中文记录架构决策、备选方案、取舍、接口边界和风险控制。
+    - 涉及 QMT 时必须说明适配层、状态恢复、幂等性、审计和紧急停止设计。
+  tasks:
+    - 使用简体中文拆分可独立验证的任务，每项任务都应包含对应验证动作。
+    - 避免把前端、后端、策略、交易接入和实盘启用合并成无法独立审查的大任务。
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+operations:
+  apply:
+    guidance:
+      - 使用简体中文汇报进度、测试结果、风险和阻塞项。
+      - 在对应 change 的独立 worktree 中实现，并优先采用测试驱动开发。
+      - 默认不得连接实盘环境或发送真实订单。
+  archive:
+    guidance:
+      - 只有实现已验证并合并到 main 后才允许归档。
+      - 使用简体中文总结规格同步结果、验证证据和遗留风险。
