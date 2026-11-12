@@ -52,7 +52,7 @@ env PATH=/Users/lcl0229/.nvm/versions/node/v22.23.2/bin:/Users/lcl0229/.local/bi
 
 Pull Request：[1215lcl/lclAI#1](https://github.com/1215lcl/lclAI/pull/1)
 
-GitHub Actions 运行：[Quality Gates #43133599627](https://github.com/1215lcl/lclAI/actions/runs/43133599627)
+GitHub Actions 运行：[Quality Gates #43144606225](https://github.com/1215lcl/lclAI/actions/runs/43144606225)
 
 - `Backend Quality`：通过
 - `Frontend Quality`：通过
