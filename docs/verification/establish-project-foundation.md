@@ -19,7 +19,7 @@ env PATH=/Users/lcl0229/.nvm/versions/node/v22.23.2/bin:/Users/lcl0229/.local/bi
 - pytest：28 项通过
 - 前端 oxlint：通过
 - TypeScript 严格类型检查：通过
-- Vitest：15 项通过
+- Vitest：16 项通过
 - Vite 生产构建：通过
 - `openspec validate --all --strict --no-interactive`：通过
 
@@ -33,6 +33,13 @@ env PATH=/Users/lcl0229/.nvm/versions/node/v22.23.2/bin:/Users/lcl0229/.local/bi
 - `/api/v1/health/ready` 返回 `200`，核心配置与 SQLite 均为 `ready`。
 - OpenAI、火山方舟、行情、新闻、向量存储和 QMT 均报告 `unconfigured`。
 - 未发起真实模型、新闻、行情、QMT 或交易调用。
+
+## 开发期 API 代理回归
+
+- Vite 将 `/api` 代理到本机 FastAPI `http://127.0.0.1:8000`。
+- 使用 `Accept: application/json` 从 `http://127.0.0.1:5173/api/v1/health/ready` 请求，返回真实 JSON 与 HTTP `200`。
+- 从 `http://127.0.0.1:5173/api/v1/providers` 请求，返回 Provider JSON 与 HTTP `200`，不再落入 Vite 的 404 或 SPA 回退。
+- `vite.config.test.ts` 固化代理目标，防止开发期配置回归。
 
 ## 敏感信息与生成文件检查
 

@@ -39,8 +39,8 @@
 ## 5. 集成验证与交付
 
 - [x] 5.1 在没有任何外部 API Key 和 QMT SDK 的干净环境启动应用，验证本机工作台可访问、核心服务就绪、外部能力正确显示为未配置或 Mock。
-- [x] 5.2 运行完整本地验证和 GitHub CI，记录命令与结果，并确认没有真实外部调用、敏感信息、临时调试代码或未解释生成文件进入变更。
-- [x] 5.3 对照三个 capability specs 执行 OpenSpec Verify，修复全部阻塞问题，并验证 proposal、specs、design、tasks 与实际实现一致。
+- [ ] 5.2 运行完整本地验证和 GitHub CI，记录命令与结果，并确认没有真实外部调用、敏感信息、临时调试代码或未解释生成文件进入变更。
+- [ ] 5.3 对照三个 capability specs 执行 OpenSpec Verify，修复全部阻塞问题，并验证 proposal、specs、design、tasks 与实际实现一致。
 
 ## Workflow follow-up
 
