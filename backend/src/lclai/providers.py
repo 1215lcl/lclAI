@@ -74,5 +74,12 @@ class ProviderRegistry:
     def get(self, provider_id: str) -> ProviderDescriptor:
         return self._providers[provider_id]
 
+    def replace(self, provider: ProviderDescriptor) -> None:
+        """替换已注册 Provider 的状态，不允许隐式新增。"""
+
+        if provider.provider_id not in self._providers:
+            raise KeyError(provider.provider_id)
+        self._providers[provider.provider_id] = provider
+
     def list(self) -> list[ProviderDescriptor]:
         return list(self._providers.values())

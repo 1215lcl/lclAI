@@ -7,14 +7,16 @@
 命令：
 
 ```bash
-python3 scripts/project.py verify
+env PATH=/Users/lcl0229/.nvm/versions/node/v22.23.2/bin:/Users/lcl0229/.local/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin python3 scripts/project.py verify
 ```
+
+执行环境：Node.js `22.23.2`（项目要求 Node.js 22 或更高版本）、Python `3.12.14`。
 
 结果：
 
 - Ruff：通过
 - mypy 严格模式：通过
-- pytest：26 项通过
+- pytest：28 项通过
 - 前端 oxlint：通过
 - TypeScript 严格类型检查：通过
 - Vitest：15 项通过
@@ -39,13 +41,29 @@ python3 scripts/project.py verify
 - 已删除未引用的 Vite 示例图片与图标。
 - `.env.example` 中的凭据字段为空，并由测试执行配置校验。
 
-## GitHub 验证（待完成）
+## GitHub 验证
 
-以下证据必须在分支推送并创建 Pull Request 后补充：
+Pull Request：[1215lcl/lclAI#1](https://github.com/1215lcl/lclAI/pull/1)
 
-- `Backend Quality`
-- `Frontend Quality`
-- `OpenSpec Quality`
-- `Platform Contracts (ubuntu-latest)`
-- `Platform Contracts (windows-latest)`
-- `main` required checks 读取验证
+GitHub Actions 运行：[Quality Gates #43131304733](https://github.com/1215lcl/lclAI/actions/runs/43131304733)
+
+- `Backend Quality`：通过
+- `Frontend Quality`：通过
+- `OpenSpec Quality`：通过
+- `Platform Contracts (ubuntu-latest)`：通过
+- `Platform Contracts (windows-latest)`：通过
+
+通过 GitHub Branch Protection 读取接口回读确认：
+
+- `main.required_status_checks.strict` 为 `true`。
+- 上述五个检查均登记为 required checks，并绑定 GitHub Actions App。
+- `allow_force_pushes` 与 `allow_deletions` 均为 `false`。
+- 因此 required check 缺失或失败时，GitHub 不允许通过受保护分支规则完成合并。
+- 五项检查成功后，PR #1 的 `mergeStateStatus` 为 `CLEAN`、`mergeable` 为 `MERGEABLE`。
+
+## 最终变更扫描
+
+- `git diff --check main...HEAD`：通过。
+- 已跟踪文件扫描只发现预期的 `backend/.env.example`，未发现 `.env`、SQLite、运行数据库、`node_modules`、`dist`、虚拟环境或缓存被提交。
+- 变更不包含真实模型、新闻、行情、QMT 或交易调用；测试使用虚构或脱敏凭据。
+- 未发现临时调试代码或未解释的生成文件。

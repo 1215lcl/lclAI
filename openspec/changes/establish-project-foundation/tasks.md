@@ -34,7 +34,7 @@
 - [x] 4.4 添加 GitHub Actions，在 Pull Request 与 `main` 上运行后端、前端和 OpenSpec 检查，并验证工作流语法有效且上传清晰的失败日志。
 - [x] 4.5 为核心 Python 契约、配置加载和启动检查增加 Windows 与 Unix 类 CI 矩阵，并验证两种环境都不需要真实模型、新闻、行情、QMT 或交易凭据。
 - [x] 4.6 添加 Issue 与 Pull Request 模板，要求填写 OpenSpec change、范围、验证命令、未改动范围和风险，并验证模板能被 GitHub 识别。
-- [ ] 4.7 在工作流产生稳定检查名称后配置 `main` required checks，并通过 GitHub 读取接口验证失败检查会阻止合并。
+- [x] 4.7 在工作流产生稳定检查名称后配置 `main` required checks，并通过 GitHub 读取接口验证失败检查会阻止合并。
 
 ## 5. 集成验证与交付
 

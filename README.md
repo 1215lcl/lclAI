@@ -43,7 +43,7 @@ python3 scripts/project.py verify
 python3 scripts/project.py build
 ```
 
-- `test`：运行后端测试；前端组件测试将在工作台壳层任务中接入同一入口。
+- `test`：运行后端测试和前端组件测试。
 - `check`：运行 Python lint/类型检查、前端 lint/类型检查和 OpenSpec 严格校验。
 - `verify`：运行后端与前端的全部 lint、类型检查、测试、前端生产构建和 OpenSpec 严格校验；提交前与 CI 使用此入口。
 - `build`：构建 Python wheel/sdist 和前端生产包。

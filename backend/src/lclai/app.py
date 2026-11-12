@@ -13,8 +13,14 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 from starlette.types import Scope
 
+from lclai.audit import ConfigAuditRepository
 from lclai.config import AppSettings, get_settings
 from lclai.model_gateway import describe_model_providers
+from lclai.provider_configuration import (
+    ModelProviderConfigService,
+    ProviderConfigNotFoundError,
+    ProviderConfigValidationError,
+)
 from lclai.providers import ProviderDescriptor, ProviderKind, ProviderRegistry
 from lclai.storage import LocalStorage
 
@@ -102,6 +108,12 @@ def create_app(
     @asynccontextmanager
     async def lifespan(application: FastAPI) -> AsyncIterator[None]:
         application.state.storage_readiness = resolved_storage.initialize()
+        if application.state.storage_readiness.ready:
+            application.state.provider_config_service = ModelProviderConfigService(
+                resolved_settings,
+                resolved_providers,
+                ConfigAuditRepository(resolved_storage.database_path),
+            )
         yield
 
     application = FastAPI(title="lclAI", version="0.1.0", lifespan=lifespan)
@@ -109,7 +121,7 @@ def create_app(
         CORSMiddleware,
         allow_origins=resolved_settings.cors_origins,
         allow_credentials=False,
-        allow_methods=["GET"],
+        allow_methods=["GET", "PUT"],
         allow_headers=["Accept", "Content-Type"],
     )
 
@@ -153,6 +165,50 @@ def create_app(
                 for description in describe_model_providers(resolved_settings)
             ]
         }
+
+    @application.put("/api/v1/settings/providers/{provider_id}")
+    def update_provider_settings(
+        provider_id: str,
+        configuration: dict[str, object],
+    ) -> JSONResponse:
+        service = getattr(application.state, "provider_config_service", None)
+        if service is None:
+            return JSONResponse(
+                {
+                    "detail": {
+                        "code": "storage_not_ready",
+                        "message": "核心存储未就绪，无法保存配置",
+                    }
+                },
+                status_code=503,
+            )
+        try:
+            provider = service.update(provider_id, configuration)
+        except ProviderConfigNotFoundError as error:
+            return JSONResponse(
+                {
+                    "detail": {
+                        "code": "provider_not_found",
+                        "message": str(error),
+                    }
+                },
+                status_code=404,
+            )
+        except ProviderConfigValidationError as error:
+            return JSONResponse(
+                {
+                    "detail": {
+                        "code": "invalid_provider_config",
+                        "message": str(error),
+                        "fields": error.fields,
+                    }
+                },
+                status_code=422,
+            )
+        return JSONResponse(
+            {"provider": provider.model_dump(mode="json")},
+            status_code=200,
+        )
 
     resolved_frontend_dist = frontend_dist or (
         Path(__file__).resolve().parents[3] / "frontend" / "dist"
